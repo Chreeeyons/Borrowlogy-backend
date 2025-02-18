@@ -1,0 +1,77 @@
+/* WORKINGGGG */
+.right-side {
+    position: fixed;
+    top: 100px;  /* Adjust distance from top */
+    right: 150px;
+}
+
+.logo-img {
+    width: 600px; /* Adjust size */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.login-text{
+    position: relative;
+    font-family: 'Kumbh Sans', sans-serif;
+    font-weight: 400;
+    color: #5E0708;
+    font-size: 24px;
+    margin-top: -30px;
+    margin-left: 8px;
+    line-height: 1.5;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left; /* Center the form */
+    justify-content: left;
+    margin-top: 50px;
+    margin-left: 8px;
+    width: 185%;
+    max-width: 300px;
+    
+}
+
+.input-group {
+    display: flex;
+    font-family: 'Kumbh Sans', sans-serif;
+    color: #5E0708;
+    flex-direction: column;
+    align-items: flex-start; /* Align text and input properly */
+    width: 185%;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-button {
+    width: 195%;
+    padding: 13px;
+    background-color: #5E0708;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Kumbh Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.login-button:hover {
+    background-color: #8A0A0B; /* Darker red for hover effect */
+}
+
+

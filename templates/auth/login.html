@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrowlogy | Log in</title>
+
+    <!-- Correctly reference static CSS -->
+    <link rel="stylesheet" href="{% static 'LTvisual.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-page">
+        <div class="left-side">
+            <style>
+                body {
+                    background-image: url("{% static 'images/backdrop2.png' %}");
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-size: 100vw 100vh;
+                }
+                @media (max-width: 768px){
+                    body{
+                        background-size: contain;
+                        background-attachment: scroll;
+                    }
+                }
+            </style>
+        </div>    
+
+        <div class="right-side">
+            <!-- Correctly reference static images -->
+            <img src="{% static 'images/Borrowlogy-logo.png' %}" alt="Borrowlogy Logo" class="logo-img">
+
+            <p class="login-text">LOG IN</p>
+
+            <div class="form-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}  <!-- Django renders input fields automatically -->
+                    <button type="submit">Log In</button>
+                </form>
+                
+            </div>
+        </div>
+
+    <!-- Correctly reference static JavaScript -->
+</body>
+</html>
