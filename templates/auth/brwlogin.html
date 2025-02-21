@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    { % load static % }
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log in | Borrowlogy</title>
-    <link rel="stylesheet" href="../static/Borrower/BRWvisuals.css">
+    <link rel="stylesheet" href="{% static 'Borrower/BRWvisuals.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,27 +13,28 @@
         <div class="left-side">
             <style>
                 body {
-                    background-image: url('../images/backdrop2.png');
+                    background-image: url("{% static 'images/backdrop2.png' %}");
                     background-repeat: no-repeat;
                     background-attachment: fixed;
                     background-size: cover;
                     background-size: 100vw 100vh;
                 }
-                @media (max-width: 768px){
-                    body{
+                @media (max-width: 768px) {
+                    body {
                         background-size: contain;
                         background-attachment: scroll;
                     }
                 }
-                </style>
+            </style>
         </div>    
 
         <div class="right-side">
-            <img src="/images/Borrowlogy-logo.png" alt="Borrowlogy Logo" class="logo-img">
+            <img src="{% static 'images/Borrowlogy-logo.png' %}" alt="Borrowlogy Logo" class="logo-img">
             <p class="login-text">LOG IN</p>
         
             <div class="form-container">
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="input-group">
                         <label for="username"><strong>UP Mail</strong></label>
                         <input type="text" id="username" name="username">
@@ -42,6 +43,6 @@
                 </form>
             </div>
         </div>
-    <script src="../static/Borrower/BRWfunctions.js"></script>
+    </div>
 </body>
 </html>
