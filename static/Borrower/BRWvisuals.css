@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: flex-start;
     position: absolute;
-    top: 200px; /* Adjust spacing from the top */
+    top: 150px; /* Adjust spacing from the top */
     right: 20%; /* Adjust right position for responsiveness */
     bottom: 200px;
     width: 80%;  /* Make the form width responsive */
