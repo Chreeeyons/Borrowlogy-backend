@@ -33,14 +33,14 @@
             <p class="login-text">LOG IN</p>
         
             <div class="form-container">
-                <form method="POST">
+                <form method="POST" action="{% url 'brwmenu' %}">
                     {% csrf_token %}
                     <div class="input-group">
                         <label for="username"><strong>UP Mail</strong></label>
                         <input type="text" id="username" name="username">
                     </div>
                     <button type="submit" class="login-button">LOG IN</button>
-                </form>
+                </form>                
             </div>
         </div>
     </div>

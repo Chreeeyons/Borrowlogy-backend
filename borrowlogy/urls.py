@@ -23,6 +23,7 @@ urlpatterns = [
     path('equipment/', include('equipment.urls')),
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
-    path('menu/', include('menu.urls')),
     path("", homepage, name="homepage"),
+    path('menu/', include('menu.urls')),
+    path('menu/', include('menu.urls')),
 ]

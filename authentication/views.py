@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -28,3 +29,8 @@ def brwlogin_view(request):
 
 def homepage(request):
     return render(request, "homepage.html")  # Django will now find it in templates/
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('homepage')  # Redirect to homepage after logout
