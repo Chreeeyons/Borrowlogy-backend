@@ -25,3 +25,6 @@ def brwlogin_view(request):
             return redirect("menu_page")
     
     return render(request, "auth/brwlogin.html", {"form": form})
+
+def homepage(request):
+    return render(request, "homepage.html")  # Django will now find it in templates/

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage | Borrowlogy</title>
+    <link rel="stylesheet" href="{% static 'Borrower/BRWvisuals.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Borrowlogy</h1>
+
+        <!-- Technician Login Button -->
+        <a href="{% url 'login' %}">
+            <button class="btn">Log in as Technician</button>
+        </a>
+
+        <!-- Borrower Login Button -->
+        <a href="/auth/brwlogin/">
+            <button class="btn">Log in as Borrower</button>
+        </a>
+    </div>
+
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>

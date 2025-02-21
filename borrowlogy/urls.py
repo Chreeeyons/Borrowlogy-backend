@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from authentication.views import homepage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
     path('menu/', include('menu.urls')),
+    path("", homepage, name="homepage"),
 ]
