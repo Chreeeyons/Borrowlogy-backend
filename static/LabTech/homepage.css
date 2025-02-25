@@ -70,8 +70,8 @@
 
 /* Heading */
 .container h1 {
-    font-size: 32px;
-    letter-spacing: 1px;
+    font-size: 45px;
+    letter-spacing: 2px;
     color: #5E0708;
     margin-bottom: 15px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
@@ -82,8 +82,9 @@
     font-size: 18px;
     font-weight: 250;
     color: #5E0708;
-    line-height: 1.5;
+    line-height: 1.3;
     margin-bottom: 30px;
+    margin-right: 50px;
 }
 
 /* Buttons */
