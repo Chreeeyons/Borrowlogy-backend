@@ -44,13 +44,13 @@
             With Borrowlogy, students can quickly access the tools they need for their experiments 
             and stay organized with a comprehensive history log to track all their borrowing activities.
             Simplifying material access, so you can focus on learning! </p>
-
+        
+        <div class="button-container">
+            <!-- Borrower Login Button -->
+            <a href="/auth/brwlogin/"><button class="btn">Log in as Borrower</button></a>
+            <!-- Technician Login Button -->
+            <a href="{% url 'login' %}"><button class="btn">Log in as Technician</button></a>
         <!-- Technician Login Button -->
-        <a href="{% url 'login' %}"><button class="btn">Log in as Technician</button></a>
-        <a href="/auth/brwlogin/"><button class="btn">Log in as Borrower</button></a>
-
     </div>
-
-
 </body>
 </html>
