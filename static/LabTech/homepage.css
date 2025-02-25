@@ -1,0 +1,164 @@
+/* Top and Bottom Borders */
+.top-border, .bottom-border {
+    background-color: #5E0708;
+    width: 100%;
+    height: 20px;
+    position: fixed;
+    left: 0;
+    z-index: 1;
+}
+
+.top-border {
+    top: 0;
+}
+
+.bottom-border {
+    bottom: 0;
+}
+
+.right-border {
+    width: 400px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 4;
+}
+
+/* Microscope Image */
+.microscope {
+    height: 700px;
+    width: auto;
+    position: fixed;
+    bottom: -6px;
+    right: 250px;
+    z-index: 3;
+}
+
+/* RBC Image */
+.rbc {
+    width: 800px;
+    height: 300px;
+    position: fixed;
+    top: -10px;
+    right: 250px;
+    z-index: 2;
+}
+
+/* Logo */
+.logo {
+    width: 200px; 
+    height: auto;
+    max-width: 500px;
+    max-height: 500px;
+    position: fixed;
+    top: 80px;
+    left: 50px;
+}
+
+/* Main Content Container */
+.container {
+    font-family: 'Kumbh Sans', sans-serif;
+    width: 700px;
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+    text-align: left;
+    z-index: 5;
+}
+
+/* Heading */
+.container h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: #5E0708;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Paragraph */
+.container p {
+    font-size: 18px;
+    font-weight: 250;
+    color: #5E0708;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+.btn {
+    font-size: 16px;
+    padding: 12px 25px;
+    margin: 10px 5px; /* Adjusted spacing */
+    color: white;
+    border: 2px solid transparent; /* Ensures no border issues */
+    border-radius: 5px;
+    background-color: #5E0708;
+    transition: 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #8A0A0B;
+    border-color: #8A0A0B; /* Adds subtle border on hover */
+}
+
+
+
+/* medj ok na pero need pa tarungon */
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .container {
+        width: 80%;
+        left: 5%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        width: 90%;
+        left: 5%;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .right-border {
+        width: 300px;
+    }
+
+    .container {
+        text-align: center;
+        width: 95%;
+        left: 2.5%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-border, .bottom-border {
+        height: 10px;
+    }
+
+    .container {
+        width: 90%;
+        left: 5%;
+    }
+
+    .container h1 {
+        font-size: 1.5rem;
+    }
+
+    .container p {
+        font-size: 1rem;
+    }
+}
