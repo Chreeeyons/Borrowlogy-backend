@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Page</title>
+    <link rel="stylesheet" href="{% static 'LabTech/LTmenupage.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Menupage</h1>
+    <!-- <h1>Menupage</h1> -->
 
     <!-- Logout Button -->
-    <form action="{% url 'logout' %}" method="post">
+    <!-- <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="btn">Logout</button>
-    </form>
+    </form> -->
 
-    <style>
-        .btn {
-            background-color: #dc3545;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #c82333;
-        }
-    </style>
+    <!-- Border -->
+    <div class="border top">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Top Border" class="top-border">
+    </div>
+    <div class="border bottom">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Bottom Border" class="bottom-border">
+    </div>
+        
+    <div class="menu-image">
+        <img src="{% static 'images/menu-backdrop.png' %}" alt="Backdrop" class="menu-backdrop">
+    </div>
 
 </body>
 </html>
