@@ -4,5 +4,8 @@ from django.shortcuts import render
 def menu_view(request):
     return render(request, "ltmenupage.html")
 
-def brwmenu_view(request):
-    return render(request, "brwmenupage.html")
+# def brwmenu_view(request):
+#     return render(request, "brwequipment.html")
+
+def brw_equipments(request):
+    return render(request, 'brwequipment.html')

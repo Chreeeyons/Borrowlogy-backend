@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.apps import AppConfig
+from .models import Equipment
 
-class EquipmentConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'equipment'  # This must match what you put in `INSTALLED_APPS`
+class EquipmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'quantity')  
 
-# Register your models here.
+admin.site.register(Equipment, EquipmentAdmin)
