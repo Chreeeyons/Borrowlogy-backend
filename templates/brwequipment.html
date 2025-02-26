@@ -1,0 +1,110 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+    .search-bar {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .equipment-card {
+        background-color: #600000;
+        color: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease-in-out;
+    }
+    .equipment-card:hover {
+        transform: scale(1.02);
+    }
+    .equipment-info {
+        flex: 2;
+        text-align: left;
+    }
+    .status {
+        font-weight: bold;
+    }
+    .available {
+        color: lightgreen;
+    }
+    .out-of-stock {
+        color: red;
+    }
+    .actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .qty-dropdown {
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .add-to-cart {
+        background-color: white;
+        color: #600000;
+        padding: 8px 12px;
+        border: 2px solid #600000;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .add-to-cart:hover {
+        background-color: #600000;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <h1>LABORATORY MATERIALS</h1>
+    
+    <input type="text" class="search-bar" placeholder="Search for materials...">
+    
+    {% for equipment in equipments %}
+    <div class="equipment-card">
+        <div class="equipment-info">
+            <h2>{{ equipment.name }}</h2>
+            <p class="status">
+                Status: 
+                {% if equipment.quantity > 0 %}
+                    <span class="available">Available</span>
+                {% else %}
+                    <span class="out-of-stock">Out of Stock</span>
+                {% endif %}
+            </p>
+            <p>Quantity: {{ equipment.quantity }}</p>
+        </div>
+        
+        <div class="actions">
+            {% if equipment.quantity > 0 %}
+                <select class="qty-dropdown">
+                    {% for i in equipment.range %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button class="add-to-cart">ADD TO CART</button>
+            {% else %}
+                <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
