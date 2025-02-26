@@ -34,3 +34,6 @@ def homepage(request):
 def logout_view(request):
     logout(request)
     return redirect('homepage')  # Redirect to homepage after logout
+
+def forgot_password_view(request):
+    return render(request, 'LTforgot-password.html')

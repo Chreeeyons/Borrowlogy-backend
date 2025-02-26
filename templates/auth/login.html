@@ -16,7 +16,7 @@
         <div class="left-side">
             <style>
                 body {
-                    background-image: url("{% static 'images/backdrop2.png' %}");
+                    background-image: url("{% static 'images/image 1.png' %}");
                     background-repeat: no-repeat;
                     background-attachment: fixed;
                     background-size: cover;
@@ -29,22 +29,30 @@
                     }
                 }
             </style>
-        </div>    
-
-        <div class="right-side">
-            <!-- Correctly reference static images -->
-            <img src="{% static 'images/Borrowlogy-logo.png' %}" alt="Borrowlogy Logo" class="logo-img">
-
-            <p class="login-text">LOG IN</p>
-
-            <div class="form-container">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}  <!-- Django renders input fields automatically -->
-                    <button type="submit">Log In</button>
-                </form>
-                
-            </div>
         </div>
+        
+        
+        <div class="login-form">
+            <form method="POST">
+                {% csrf_token %}
+                <h1 class="header-name">Borrowlogy</h1>
+                <h2 class="login-text">LOG IN</h2>
+        
+                <div class="input-group">
+                    <label for="id_username">Email Address</label>
+                    {{ form.username }}  <!-- Django automatically renders the input field -->
+                </div>
+        
+                <div class="input-group">    
+                    <label for="id_password">Password</label>
+                    {{ form.password }}  <!-- Django automatically renders the input field -->
+                </div>
+        
+                <button type="submit" class="login-button">LOG IN</button>
+                <p class="signup-link"><a href="{% url 'forgot_password' %}">FORGOT PASSWORD?</a></p>
+                <!-- Uses Django URL template tag for dynamic routing -->
+            </form>
+        </div>
+        
 </body>
 </html>
