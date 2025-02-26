@@ -21,6 +21,7 @@
     font-weight: bold;
     letter-spacing: 3px;
     margin-bottom: 0;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Login text */
