@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("password").value; 
 
         // Dummy validation (Replace with actual authentication logic)
-        if (username === "admin" && password === "4444") {
+        if (username === "" && password === "") {
             alert("Login successful!");
             window.location.href = "LTmenupage.html"; // Redirect to menu page
         } else {

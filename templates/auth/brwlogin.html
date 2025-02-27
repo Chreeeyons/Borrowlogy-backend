@@ -13,7 +13,7 @@
         <div class="left-side">
             <style>
                 body {
-                    background-image: url("{% static 'images/backdrop2.png' %}");
+                    background-image: url("{% static 'images/image 1.png' %}");
                     background-repeat: no-repeat;
                     background-attachment: fixed;
                     background-size: cover;
@@ -26,23 +26,20 @@
                     }
                 }
             </style>
-        </div>    
-
-        <div class="right-side">
-            <img src="{% static 'images/Borrowlogy-logo.png' %}" alt="Borrowlogy Logo" class="logo-img">
-            <p class="login-text">LOG IN</p>
-        
-            <div class="form-container">
-                <form method="POST" action="{% url 'brwmenu' %}">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <label for="username"><strong>UP Mail</strong></label>
-                        <input type="text" id="username" name="username">
-                    </div>
-                    <button type="submit" class="login-button">LOG IN</button>
-                </form>                
-            </div>
         </div>
-    </div>
+        
+        <div class="login-form">
+            <form method="POST" action="{% url 'brw_equipments' %}">
+                {% csrf_token %}
+                <h1 class="header-name">Borrowlogy</h1>
+                <h2 class="login-text">LOG IN</h2>
+        
+                <div class="input-group">
+                    <label for="id_username">UP Mail</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <button type="submit" class="login-button">LOG IN</button>
+            </form>
+        </div>
 </body>
 </html>

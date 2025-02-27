@@ -1,34 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Page</title>
+    <link rel="stylesheet" href="{% static 'LabTech/LTmenupage.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Menupage</h1>
+    <!-- <h1>Menupage</h1> -->
 
     <!-- Logout Button -->
-    <form action="{% url 'logout' %}" method="post">
+    <!-- <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="btn">Logout</button>
-    </form>
+    </form> -->
 
-    <style>
-        .btn {
-            background-color: #dc3545;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #c82333;
-        }
-    </style>
+    <!-- Border -->
+    <div class="border top">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Top Border" class="top-border">
+    </div>
+    <div class="border bottom">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Bottom Border" class="bottom-border">
+    </div>
 
+    <div class="menu-page">
+        <img src="{% static 'images/microscope bg.png' %}" alt="Background" class="menu-background">
+    </div>
+    
+    <!-- menu side -->
+    <div class="menu-image">
+        <img src="{% static 'images/menu-backdrop.png' %}" alt="Backdrop" class="menu-backdrop">
+        <div class="menu-container">
+            <h1> Menu </h1>
+            <ul>
+                <li><a href="#borrowers-request">Borrower's Requests</a></li>
+                <li><a href="#borrowers-master-list">Borrowers Master List</a></li>
+                <li><a href="#laboratory-materials">Laboratory Materials</a></li>
+            </ul>
+        </div>
+    </div>    
+
+    
+    <!-- Borrower's Request Section -->
+    <div id="borrowers-request" class="section">
+        <h1 class="header">BORROWER'S REQUESTS</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+    </div>
+
+    <!-- Borrower's Master List Section -->
+    <div id="borrowers-master-list" class="section">
+        <h1 class="header">BORROWERS MASTER LIST</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+    </div>
+
+    <!-- Laboratory Materials Section -->
+    <div id="laboratory-materials" class="section">
+        <h1 class="header">LABORATORY MATERIALS</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+    </div>
+
+
+
+    <script src="{% static 'LabTech/LTmenupage.js' %}"></script>
 </body>
 </html>
