@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Equipment</title>
+    <style>
+        #lab-materials {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="show-materials">Laboratory Materials</button>
+    <div id="lab-materials">
+        <h2>Available Equipment</h2>
+        {% if equipment_list %}
+        <ul>
+            {% for equipment in equipment_list %}
+                <li>{{ equipment.name }} - {{ equipment.quantity }} available</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No equipment found.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById("show-materials").addEventListener("click", function() {
+            var labMaterials = document.getElementById("lab-materials");
+            if (labMaterials.style.display === "none") {
+                labMaterials.style.display = "block";
+            } else {
+                labMaterials.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
