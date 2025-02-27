@@ -1,77 +1,107 @@
-/* WORKINGGGG */
-.right-side {
-    position: fixed;
-    top: 100px;  /* Adjust distance from top */
-    right: 150px;
-}
-
-.logo-img {
-    width: 600px; /* Adjust size */
-    height: auto; /* Maintain aspect ratio */
-}
-
-.login-text{
-    position: relative;
-    font-family: 'Kumbh Sans', sans-serif;
-    font-weight: 400;
-    color: #5E0708;
-    font-size: 24px;
-    margin-top: -30px;
-    margin-left: 8px;
-    line-height: 1.5;
-}
-
-.form-container {
+/* Login Form Container */
+.login-form {
     display: flex;
     flex-direction: column;
-    align-items: left; /* Center the form */
-    justify-content: left;
-    margin-top: 50px;
-    margin-left: 8px;
-    width: 185%;
-    max-width: 300px;
-    
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 150px; /* Adjust spacing from the top */
+    right: 20%; /* Adjust right position for responsiveness */
+    bottom: 200px;
+    width: 80%;  /* Make the form width responsive */
+    max-width: 380px; /* Limit the maximum width */
+    box-sizing: border-box; /* Include padding and border in width calculation */
+}
+
+/* Borrowlogy header */
+.header-name {
+    font-family: 'Kumbh Sans', sans-serif;
+    color: #5E0708;
+    font-size: 60px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 0;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Login text */
+.login-text {
+    font-family: 'Kumbh Sans', sans-serif;
+    color: #5E0708;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 50px;
 }
 
 .input-group {
-    display: flex;
     font-family: 'Kumbh Sans', sans-serif;
     color: #5E0708;
     flex-direction: column;
-    align-items: flex-start; /* Align text and input properly */
-    width: 185%;
-    margin-bottom: 20px;
+    align-items: flex-start;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
 }
 
 .input-group label {
-    font-size: 16px;
-    margin-bottom: 5px;
+    letter-spacing: 1px;
 }
 
 .input-group input {
-    width: 100%;
     padding: 13px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 380px;
+    box-sizing: border-box;
 }
 
 .login-button {
-    width: 195%;
     padding: 13px;
     background-color: #5E0708;
-    border: none;
-    border-radius: 5px;
+    border: 1.5px solid #5E0708;
+    border-radius: 8px;
     color: #fff;
     font-family: 'Kumbh Sans', sans-serif;
     font-size: 16px;
     font-weight: 600;
+    letter-spacing: 3px;
+    margin-top: 10px;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
-    margin-top: 20px;
+    width: 100%;  /* Button fits within the container */
+    max-width: 380px;
+    box-sizing: border-box;
 }
 
 .login-button:hover {
     background-color: #8A0A0B; /* Darker red for hover effect */
 }
 
+/* Signup Link */
+.signup-link {
+    text-decoration: underline;
+    font-family: 'Kumbh Sans', sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
 
+.signup-link a {
+    text-decoration: none;
+    color: #5E0708;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.signup-link a:hover {
+    color: #8A0A0B;
+    text-decoration: underline;
+}
