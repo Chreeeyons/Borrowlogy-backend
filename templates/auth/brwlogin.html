@@ -29,17 +29,21 @@
         </div>
         
         <div class="login-form">
-            <form method="POST" action="{% url 'brw_equipments' %}">
+            <form method="POST">
                 {% csrf_token %}
                 <h1 class="header-name">Borrowlogy</h1>
                 <h2 class="login-text">LOG IN</h2>
-        
+            
+                {% if error %}
+                    <p style="color: red !important;">{{ error }}</p>
+                {% endif %}
+            
                 <div class="input-group">
                     <label for="id_username">UP Mail</label>
                     <input type="text" id="username" name="username">
                 </div>
                 <button type="submit" class="login-button">LOG IN</button>
-            </form>
+            </form>                      
         </div>
 </body>
 </html>

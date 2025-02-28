@@ -105,4 +105,7 @@
     text-decoration: underline;
 }
 
-
+.error-message {
+    color: red !important;  /* Force red color */
+    margin-bottom: 10px;
+}
