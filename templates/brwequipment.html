@@ -1,110 +1,132 @@
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        width: 90%;
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        text-align: center;
-    }
-    .search-bar {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    .equipment-card {
-        background-color: #600000;
-        color: white;
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: transform 0.2s ease-in-out;
-    }
-    .equipment-card:hover {
-        transform: scale(1.02);
-    }
-    .equipment-info {
-        flex: 2;
-        text-align: left;
-    }
-    .status {
-        font-weight: bold;
-    }
-    .available {
-        color: lightgreen;
-    }
-    .out-of-stock {
-        color: red;
-    }
-    .actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-    .qty-dropdown {
-        padding: 5px;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-    .add-to-cart {
-        background-color: white;
-        color: #600000;
-        padding: 8px 12px;
-        border: 2px solid #600000;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s;
-    }
-    .add-to-cart:hover {
-        background-color: #600000;
-        color: white;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Page</title>
+    <link rel="stylesheet" href="{% static 'Borrower/BRWmenupage.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background -->
+    <div class="border top">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Top Border" class="top-border">
+    </div>
+    <div class="border bottom">
+        <img src="{% static 'images/black-shadow-1.png' %}" alt="Bottom Border" class="bottom-border">
+    </div>
 
-<div class="container">
-    <h1>LABORATORY MATERIALS</h1>
-    
-    <input type="text" class="search-bar" placeholder="Search for materials...">
-    
-    {% for equipment in equipments %}
-    <div class="equipment-card">
-        <div class="equipment-info">
-            <h2>{{ equipment.name }}</h2>
-            <p class="status">
-                Status: 
-                {% if equipment.quantity > 0 %}
-                    <span class="available">Available</span>
-                {% else %}
-                    <span class="out-of-stock">Out of Stock</span>
-                {% endif %}
-            </p>
-            <p>Quantity: {{ equipment.quantity }}</p>
-        </div>
-        
-        <div class="actions">
-            {% if equipment.quantity > 0 %}
-                <select class="qty-dropdown">
-                    {% for i in equipment.range %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-                <button class="add-to-cart">ADD TO CART</button>
-            {% else %}
-                <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
-            {% endif %}
+    <div class="menu-page">
+        <img src="{% static 'images/microscope bg.png' %}" alt="Background" class="menu-background">
+    </div>
+
+    <!-- menu side -->
+    <div class="menu-image">
+        <img src="{% static 'images/menu-backdrop.png' %}" alt="Backdrop" class="menu-backdrop">
+        <div class="menu-container">
+            <h1> Menu </h1>
+            <ul>
+                <li><a href="#laboratory-materials">Laboratory Materials</a></li>
+                <li><a href="#caaart">Cart</a></li>
+                <li><a href="#history">History Log</a></li>
+            </ul>
         </div>
     </div>
-    {% endfor %}
-</div>
+
+    <!-- Laboratory Materials Section -->
+    <div id="laboratory-materials" class="section">
+        <h1 class="header">LABORATORY MATERIALS</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+        
+            <div class="container">
+                <input type="text" class="search-bar" placeholder="Search for materials...">
+                
+                {% for equipment in equipments %}
+                <div class="equipment-card">
+                    <div class="equipment-info">
+                        <h2>{{ equipment.name }}</h2>
+                        <div class="status-quantity">
+                            <p class="status">
+                                {% if equipment.quantity > 0 %}
+                                    <span class="available">Available</span>
+                                {% else %}
+                                    <span class="out-of-stock">Out of Stock</span>
+                                {% endif %}
+                            </p>
+                            <span class="separator"> | </span>
+                            <p class="quantity">Quantity: {{ equipment.quantity }}</p>
+                        </div>
+                    </div>
+
+                <div class="actions">
+                    {% if equipment.quantity > 0 %}
+                        <select class="qty-dropdown">
+                            {% for i in equipment.range %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="add-to-cart">ADD TO CART</button>
+                    {% else %}
+                        <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>    
+
+    <!-- Cart Section -->
+    <div id="caaart" class="section">
+        <h1 class="header">BORROWER’S CART</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+        </div>
+    </div>   
+
+    <!-- History Section -->
+    <div id="history" class="section">
+        <h1 class="header">BORROWER’S HISTORY LOG</h1>
+        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+        </div>
+    </div>    
+
+
+    <!-- <div class="container">
+        <h1>LABORATORY MATERIALS</h1>
+        
+        <input type="text" class="search-bar" placeholder="Search for materials...">
+        
+        {% for equipment in equipments %}
+        <div class="equipment-card">
+            <div class="equipment-info">
+                <h2>{{ equipment.name }}</h2>
+                <p class="status">
+                    Status: 
+                    {% if equipment.quantity > 0 %}
+                        <span class="available">Available</span>
+                    {% else %}
+                        <span class="out-of-stock">Out of Stock</span>
+                    {% endif %}
+                </p>
+                <p>Quantity: {{ equipment.quantity }}</p>
+            </div>
+            
+            <div class="actions">
+                {% if equipment.quantity > 0 %}
+                    <select class="qty-dropdown">
+                        {% for i in equipment.range %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="add-to-cart">ADD TO CART</button>
+                {% else %}
+                    <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div> -->
+
+    <script src="{% static 'Borrower/BRWmenupage.js' %}"></script>
+</body>
+</html>
