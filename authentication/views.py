@@ -22,15 +22,21 @@ def login_view(request):
 
 def brwlogin_view(request):
     if request.method == "POST":
-        email = request.POST.get("username")  # Get the entered UP Mail
-        user = authenticate(request, username=email)  # Use email instead of username
+        username = request.POST.get("username")
+        password = request.POST.get("password")  # Ensure you collect passwords
 
-        if user:
+        if not username.endswith("@up.edu.ph"):
+            messages.error(request, "Only UP Mail accounts are allowed.")
+            return render(request, "auth/brwlogin.html")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
             login(request, user)
-            return redirect("menu_page")  # Redirect after successful login
+            return redirect("brw_equipments")  # Redirect after successful login
         else:
-            return render(request, "auth/brwlogin.html", {"error": "Invalid UP mail"})
-
+            messages.error(request, "Invalid credentials. Please try again.")
+    
     return render(request, "auth/brwlogin.html")
 
 def homepage(request):
