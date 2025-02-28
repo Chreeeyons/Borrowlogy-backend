@@ -106,6 +106,6 @@
 }
 
 .error-message {
-    color: red !important;  /* Force red color */
+    color: red !important;
     margin-bottom: 10px;
 }

@@ -13,3 +13,4 @@ urlpatterns = [
     path('forgot-password/', views.forgot_password_view, name='forgot_password'),
     path('menu/ltmenu/', views.login_view, name='ltmenu'),
 ]
+]   
