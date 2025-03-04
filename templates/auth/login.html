@@ -37,21 +37,25 @@
                 {% csrf_token %}
                 <h1 class="header-name">Borrowlogy</h1>
                 <h2 class="login-text">LOG IN</h2>
-        
+            
+                <!-- Display error message -->
+                {% if error_message %}
+                    <p class="error-message">{{ error_message }}</p>
+                {% endif %}
+            
                 <div class="input-group">
                     <label for="id_username">Email Address</label>
-                    {{ form.username }}  <!-- Django automatically renders the input field -->
+                    <input type="text" name="username" id="id_username" required>
                 </div>
-        
+            
                 <div class="input-group">    
                     <label for="id_password">Password</label>
-                    {{ form.password }}  <!-- Django automatically renders the input field -->
+                    <input type="password" name="password" id="id_password" required>
                 </div>
-        
+            
                 <button type="submit" class="login-button">LOG IN</button>
                 <p class="signup-link"><a href="{% url 'forgot_password' %}">FORGOT PASSWORD?</a></p>
-                <!-- Uses Django URL template tag for dynamic routing -->
-            </form>
+            </form>            
         </div>
         
 </body>
