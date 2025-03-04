@@ -59,18 +59,18 @@
                         </div>
                     </div>
 
-                <div class="actions">
-                    {% if equipment.quantity > 0 %}
-                        <select class="qty-dropdown">
-                            {% for i in equipment.range %}
-                                <option value="{{ i }}">{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    {% else %}
-                        <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
-                    {% endif %}
-                </div>
+                    <div class="actions">
+                        {% if equipment.quantity > 0 %}
+                            <select class="qty-dropdown">
+                                {% for i in equipment.range %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="add-to-cart">ADD TO CART</button>
+                        {% else %}
+                            <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                        {% endif %}
+                    </div>                    
             </div>
             {% endfor %}
         </div>
