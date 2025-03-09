@@ -40,7 +40,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const card = button.closest(".equipment-card");
             const itemName = card.querySelector("h2").innerText;
             const quantityInput = card.querySelector(".qty-input");
-            const quantity = parseInt(quantityInput.value);
+            let quantity = parseInt(quantityInput.value);
+            const availableStock = parseInt(quantityInput.getAttribute("max"));  // Get max stock
+
+            if (isNaN(quantity) || quantity < 1) {
+                alert("Please enter a valid quantity.");
+                return;
+            }
+
+            if (quantity > availableStock) {
+                alert(`Only ${availableStock} item(s) are available.`);
+                quantityInput.value = availableStock;  // Auto-correct to max available
+                return;
+            }
 
             if (isNaN(quantity) || quantity < 1) {
                 alert("Please enter a valid quantity.");
@@ -57,10 +69,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const existingItem = cart.find(item => item.name === itemName);
 
         if (existingItem) {
-            existingItem.quantity += quantity;
+            const totalQuantity = existingItem.quantity + quantity;
+            if (totalQuantity > availableStock) {
+                alert(`You can only add up to ${availableStock} of this item.`);
+                return;
+            }
+            existingItem.quantity = totalQuantity;
         } else {
             cart.push({ name: itemName, quantity: quantity });
         }
+
         renderCart();
     }
 
