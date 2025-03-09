@@ -34,55 +34,63 @@
         </div>
     </div>
 
-    <!-- Laboratory Materials Section -->
-    <div id="laboratory-materials" class="section">
-        <h1 class="header">LABORATORY MATERIALS</h1>
-        <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+ <!-- Laboratory Materials Section -->
+<div id="laboratory-materials" class="section">
+    <h1 class="header">LABORATORY MATERIALS</h1>
+    <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+    
+    <div class="container">
+        <input type="text" class="search-bar" placeholder="Search for materials...">
         
-            <div class="container">
-                <input type="text" class="search-bar" placeholder="Search for materials...">
-                
-                {% for equipment in equipments %}
-                <div class="equipment-card">
-                    <div class="equipment-info">
-                        <h2>{{ equipment.name }}</h2>
-                        <div class="status-quantity">
-                            <p class="status">
-                                {% if equipment.quantity > 0 %}
-                                    <span class="available">Available</span>
-                                {% else %}
-                                    <span class="out-of-stock">Out of Stock</span>
-                                {% endif %}
-                            </p>
-                            <span class="separator"> | </span>
-                            <p class="quantity">Quantity: {{ equipment.quantity }}</p>
-                        </div>
-                    </div>
-
-                    <div class="actions">
+        {% for equipment in equipments %}
+        <div class="equipment-card">
+            <div class="equipment-info">
+                <h2>{{ equipment.name }}</h2>
+                <div class="status-quantity">
+                    <p class="status">
                         {% if equipment.quantity > 0 %}
-                            <select class="qty-dropdown">
-                                {% for i in equipment.range %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                            <button class="add-to-cart">ADD TO CART</button>
+                            <span class="available">Available</span>
                         {% else %}
-                            <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                            <span class="out-of-stock">Out of Stock</span>
                         {% endif %}
-                    </div>                    
+                    </p>
+                    <span class="separator"> | </span>
+                    <p class="quantity">Quantity: {{ equipment.quantity }}</p>
+                </div>
             </div>
-            {% endfor %}
+
+            <div class="actions">
+                {% if equipment.quantity > 0 %}
+                    <select class="qty-dropdown">
+                        {% for i in equipment.range %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="add-to-cart">ADD TO CART</button>
+                {% else %}
+                    <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                {% endif %}
+            </div>                    
         </div>
-    </div>    
+        {% endfor %}
+
+        <!-- ✅ Go to Cart Button -->
+        <div class="cart-button-container">
+            <button class="go-to-cart" onclick="goToCart()">Go to Cart</button>
+        </div>
+    </div>
+</div>    
+
 
     <!-- Cart Section -->
     <div id="caaart" class="section">
         <h1 class="header">BORROWER’S CART</h1>
         <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+        <div class="cart-container">
+            <p>No items in cart.</p>
         </div>
-    </div>   
-
+    </div>
+    
     <!-- History Section -->
     <div id="history" class="section">
         <h1 class="header">BORROWER’S HISTORY LOG</h1>
