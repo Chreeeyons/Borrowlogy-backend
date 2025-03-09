@@ -39,8 +39,13 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function (event) {
             const card = button.closest(".equipment-card");
             const itemName = card.querySelector("h2").innerText;
-            const quantitySelect = card.querySelector(".qty-dropdown");
-            const quantity = parseInt(quantitySelect.value);
+            const quantityInput = card.querySelector(".qty-input");
+            const quantity = parseInt(quantityInput.value);
+
+            if (isNaN(quantity) || quantity < 1) {
+                alert("Please enter a valid quantity.");
+                return;
+            }
 
             addItemToCart(itemName, quantity);
             alert("Item added to cart successfully!");

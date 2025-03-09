@@ -61,11 +61,7 @@
 
             <div class="actions">
                 {% if equipment.quantity > 0 %}
-                    <select class="qty-dropdown">
-                        {% for i in equipment.range %}
-                            <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="number" class="qty-input" min="1" max="{{ equipment.quantity }}" value="1">
                     <button class="add-to-cart">ADD TO CART</button>
                 {% else %}
                     <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
