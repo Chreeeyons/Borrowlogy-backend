@@ -107,24 +107,66 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Your cart is empty!");
             return;
         }
-
+    
         let transactionNumber = userHistoryLog.length + 1;
         let timestamp = new Date().toLocaleString();
         let transaction = { transactionId: `Transaction #${transactionNumber}`, timestamp: timestamp, items: [...cart] };
         userHistoryLog.push(transaction);
-
+    
         localStorage.setItem(`historyLog_${currentUserEmail}`, JSON.stringify(userHistoryLog));
-
+    
+        // ✅ Update Stock Quantities in the UI
+        cart.forEach(cartItem => {
+            const itemCards = document.querySelectorAll(".equipment-card");
+    
+            itemCards.forEach(card => {
+                const itemNameElement = card.querySelector("h2");
+                const qtyInput = card.querySelector(".qty-input");
+                const stockDisplay = card.querySelector(".quantity"); // ✅ Fix: Get the "Quantity: X" text
+                const statusElement = card.querySelector(".status .available"); // ✅ Get status element
+    
+                if (itemNameElement.innerText === cartItem.name) {
+                    let currentStock = parseInt(qtyInput.getAttribute("max"));
+                    let newStock = currentStock - cartItem.quantity;
+    
+                    // ✅ Prevent stock from going below zero
+                    qtyInput.setAttribute("max", newStock);
+                    qtyInput.value = newStock;
+    
+                    // ✅ Update the "Quantity: X" text
+                    if (stockDisplay) {
+                        stockDisplay.innerText = `Quantity: ${newStock}`;
+                    }
+    
+                    // ✅ Handle Out of Stock scenario
+                    if (newStock <= 0) {
+                        qtyInput.disabled = true;
+                        qtyInput.style.opacity = "0.5";
+                        card.querySelector(".add-to-cart").disabled = true;
+                        card.querySelector(".add-to-cart").style.opacity = "0.5";
+                        card.querySelector(".add-to-cart").style.cursor = "not-allowed";
+    
+                        if (statusElement) {
+                            statusElement.classList.remove("available");
+                            statusElement.classList.add("out-of-stock");
+                            statusElement.innerText = "Out of Stock";
+                        }
+                    }
+                }
+            });
+        });
+    
         cart = [];
         renderCart();
         renderHistory();
-    
+        
         alert("Borrow request confirmed!");
-    }
+    }    
 
     function renderHistory() {
         const historySection = document.getElementById("history-log");
         const savedHistory = localStorage.getItem(`historyLog_${currentUserEmail}`);
+    
         if (savedHistory) {
             userHistoryLog = JSON.parse(savedHistory);
         }
@@ -147,15 +189,17 @@ document.addEventListener("DOMContentLoaded", function () {
     
                 historySection.appendChild(transactionDiv);
             });
+    
+            // ✅ Add the Clear History Button
+            const clearButton = document.createElement("button");
+            clearButton.innerText = "Clear History";
+            clearButton.classList.add("clear-history-btn");
+            clearButton.onclick = clearHistoryLog;
+    
+            historySection.appendChild(clearButton);
         }
     }
-
-    function clearHistoryLog() {
-        userHistoryLog = [];
-        localStorage.removeItem(`historyLog_${currentUserEmail}`);
-        renderHistory();
-    }
-
+    
     window.onload = function () {
         renderHistory();
     };
@@ -179,10 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
     renderHistory();
 
     function clearHistoryLog() {
-        historyLog = []; // ✅ Clear the array
-        localStorage.removeItem("historyLog"); // ✅ Remove from storage
-        renderHistory(); // ✅ Refresh the display
-    }
+        userHistoryLog = []; // ✅ Reset the array
+        localStorage.removeItem(`historyLog_${currentUserEmail}`); // ✅ Remove only the logged-in user's history
+        renderHistory(); // ✅ Refresh the history section
+    }    
     
     // ✅ Add a Clear History Button
     document.addEventListener("DOMContentLoaded", function () {
