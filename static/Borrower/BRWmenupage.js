@@ -200,7 +200,19 @@ document.addEventListener("DOMContentLoaded", function () {
     
     window.onload = function () {
         renderHistory();
-    };
+    
+        // ✅ Automatically show Laboratory Materials on page load
+        const defaultSection = document.getElementById("laboratory-materials");
+        if (defaultSection) {
+            sections.forEach(section => {
+                section.classList.remove("active");
+                section.style.display = "none";
+            });
+    
+            defaultSection.classList.add("active");
+            defaultSection.style.display = "block";
+        }
+    };    
 
     window.removeItem = function(index) {
         cart.splice(index, 1);
