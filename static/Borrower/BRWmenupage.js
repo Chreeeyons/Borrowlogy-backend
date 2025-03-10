@@ -165,11 +165,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderHistory() {
         const historySection = document.getElementById("history-log");
-        const savedHistory = localStorage.getItem(`historyLog_${currentUserEmail}`);
     
-        if (savedHistory) {
-            userHistoryLog = JSON.parse(savedHistory);
-        }
+        // ✅ Ensure we only load history for the logged-in user
+        let savedHistory = localStorage.getItem(`historyLog_${currentUserEmail}`);
+        userHistoryLog = savedHistory ? JSON.parse(savedHistory) : [];
     
         historySection.innerHTML = "";
     
@@ -190,15 +189,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 historySection.appendChild(transactionDiv);
             });
     
-            // ✅ Add the Clear History Button
+            // ✅ Make sure the "Clear History" button only affects the logged-in user
             const clearButton = document.createElement("button");
             clearButton.innerText = "Clear History";
             clearButton.classList.add("clear-history-btn");
             clearButton.onclick = clearHistoryLog;
-    
             historySection.appendChild(clearButton);
         }
-    }
+    }    
     
     window.onload = function () {
         renderHistory();
@@ -223,10 +221,10 @@ document.addEventListener("DOMContentLoaded", function () {
     renderHistory();
 
     function clearHistoryLog() {
-        userHistoryLog = []; // ✅ Reset the array
-        localStorage.removeItem(`historyLog_${currentUserEmail}`); // ✅ Remove only the logged-in user's history
-        renderHistory(); // ✅ Refresh the history section
-    }    
+        userHistoryLog = []; // ✅ Reset only the current user's log
+        localStorage.removeItem(`historyLog_${currentUserEmail}`); // ✅ Remove only their history
+        renderHistory(); // ✅ Refresh the display
+    }      
     
     // ✅ Add a Clear History Button
     document.addEventListener("DOMContentLoaded", function () {
