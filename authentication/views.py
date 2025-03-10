@@ -26,7 +26,7 @@ def brwlogin_view(request):
         password = request.POST.get("password")  # Ensure you collect passwords
 
         if not username.endswith("@up.edu.ph"):
-            messages.error(request, "Only UP Mail accounts are allowed.")
+            messages.error(request, "Please enter a valid UP mail.")
             return render(request, "auth/brwlogin.html")
 
         user = authenticate(request, username=username, password=password)
