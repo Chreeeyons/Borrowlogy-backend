@@ -1,1 +1,83 @@
+# Environment Variables
+.env
+.env*.local
+
+# Python / Django #
+*.log
+*.pot
 *.pyc
+__pycache__/
+db.sqlite3
+media/
+*.bak
+
+# Django Migrations #
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Python Packages #
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Cache Files #
+*.cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments #
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Unit test / coverage reports #
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Installer logs #
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebooks #
+.ipynb_checkpoints/
+
+# Django Static and Media Files #
+staticfiles/
+media/
+
+# SQLite Database #
+db.sqlite3
+
+# VS Code Settings #
+.vscode/
+.history
+
+# Backup files #
+*.bak
+*.orig
+
+# Compiled Python Files #
+*.pyc
+__pycache__/
+
+# Temporary Files #
+*.swp
+*.swo
+
+# Pipenv #
+Pipfile.lock
+
+# Django Secrets #
+secret_key.txt
+
+# System Files #
+.DS_Store
+Thumbs.db
