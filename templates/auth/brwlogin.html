@@ -34,9 +34,12 @@
                 <h1 class="header-name">Borrowlogy</h1>
                 <h2 class="login-text">LOG IN</h2>
             
-                {% if error %}
-                    <p style="color: red !important;">{{ error }}</p>
+                {% if messages %}
+                    {% for message in messages %}
+                    <p style="color: red; text-align: left;">{{ message }}</p>
+                    {% endfor %}
                 {% endif %}
+
             
                 <div class="input-group">
                     <label for="id_username">UP Mail</label>

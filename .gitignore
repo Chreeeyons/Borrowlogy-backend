@@ -6,6 +6,7 @@
 *.log
 *.pot
 *.pyc
+<<<<<<< HEAD
 __pycache__/
 db.sqlite3
 media/
@@ -81,3 +82,7 @@ secret_key.txt
 # System Files #
 .DS_Store
 Thumbs.db
+=======
+**/__pycache__/
+**/__pycache__/
+>>>>>>> fc5b978bd1fd74a8e2b324827e4de1ed1ff5e534

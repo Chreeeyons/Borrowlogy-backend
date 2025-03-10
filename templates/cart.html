@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+
+    {% if cart_items %}
+        <ul>
+            {% for item in cart_items %}
+                <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items in your cart.</p>
+    {% endif %}
+
+    <a href="{% url 'brw_equipments' %}">Back to Equipment</a>
+</body>
+</html>

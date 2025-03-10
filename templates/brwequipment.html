@@ -61,11 +61,7 @@
 
             <div class="actions">
                 {% if equipment.quantity > 0 %}
-                    <select class="qty-dropdown">
-                        {% for i in equipment.range %}
-                            <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="number" class="qty-input" min="1" max="{{ equipment.quantity }}" value="1">
                     <button class="add-to-cart">ADD TO CART</button>
                 {% else %}
                     <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
@@ -95,8 +91,11 @@
     <div id="history" class="section">
         <h1 class="header">BORROWER’S HISTORY LOG</h1>
         <img src="{% static 'images/request background 1.png' %}" alt="Background" class="request-background">
+        <div id="history-log" class="history-container">
+            <p>No borrow history yet.</p>
         </div>
-    </div>    
+    </div>
+      
 
 
     <!-- <div class="container">
