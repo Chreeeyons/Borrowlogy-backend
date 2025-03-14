@@ -49,6 +49,7 @@
                 <div class="status-quantity">
                     <p class="status">
                         {% if equipment.quantity > 0 %}
+<<<<<<< HEAD
                             <span class="available">Available</span>
                         {% else %}
                             <span class="out-of-stock">Out of Stock</span>
@@ -57,6 +58,15 @@
                     <span class="separator"> | </span>
                     <p class="quantity">Quantity: {{ equipment.quantity }}</p>
                 </div>
+=======
+                            <input type="number" class="qty-input" min="1" max="{{ equipment.quantity }}" value="1">
+                            <button class="add-to-cart" data-equipment="{{ equipment.name }}" data-max="{{ equipment.quantity }}">ADD TO CART</button>
+                            {% else %}
+                            <button class="add-to-cart" disabled style="opacity: 0.5; cursor: not-allowed;">Out of Stock</button>
+                        {% endif %}
+                    </div>
+                    
+>>>>>>> 39204b3926816ab34f405f5dce5e0b90fe2e06cb
             </div>
 
             <div class="actions">
