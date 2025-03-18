@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from authentication.views import homepage
+from .routers import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,6 @@ urlpatterns = [
     path('menu/', include('menu.urls')),
     path('menu/', include('menu.urls')),
     path('equipment/', include('equipment.urls')),
+    path('api/', include((router.urls, 'core_api'), namespace = 'core_api')),
+    
 ]

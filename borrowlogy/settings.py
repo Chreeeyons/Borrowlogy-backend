@@ -40,18 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'corseheaders',
+    'corsheaders',
 
     #local apps
+    'authentication',
     'equipment',
     'transactions',
-    'authentication',
     'menu',
     
     
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,6 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'borrowlogy.wsgi.application'
 
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
 LOGIN_URL = ''
 
 LOGIN_URLS = ('', 'auth/login',)
@@ -145,3 +147,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'authentication.backends.UPEmailAuthBackend'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
