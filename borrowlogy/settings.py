@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     'authentication',
     'equipment',
     'transactions',
-    'menu',
-    
+    # 'request',
     
 ]
 
