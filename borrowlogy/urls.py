@@ -25,8 +25,6 @@ urlpatterns = [
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
     path("", homepage, name="homepage"),
-    path('menu/', include('menu.urls')),
-    path('menu/', include('menu.urls')),
     path('equipment/', include('equipment.urls')),
     path('api/', include((router.urls, 'core_api'), namespace = 'core_api')),
     
