@@ -1,8 +1,11 @@
-from django.contrib import admin
+# cart/urls.py
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+
+router = DefaultRouter()
+router.register(r'carts', views.CartViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('equipment/', include('equipment.urls')),  # Existing app
-    path('cart/', include('cart.urls')),  # New app
+    path('', include(router.urls)),
 ]
