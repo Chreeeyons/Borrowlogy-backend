@@ -15,9 +15,9 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE, null=True, blank=True)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.material.name} x {self.quantity}"
+        return f"{self.material.name} x {self.quantity if self.material else 'N/A'}"
