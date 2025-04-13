@@ -1,9 +1,9 @@
-from rest_framework import viewsets, status
+# cart/viewsets.py
+from rest_framework import viewsets
+from .models import Cart, CartItem, Material
+from .serializers import CartSerializer, CartItemSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Cart, CartItem, Material
-from .serializers import CartSerializer
-# (and others like CartItemSerializer if needed)
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
@@ -17,11 +17,13 @@ class CartViewSet(viewsets.ModelViewSet):
         cart = self.get_object()
         material_id = request.data.get('material_id')
         quantity = int(request.data.get('quantity', 1))
+        remarks = request.data.get('remarks', '')  # Capture remarks
         try:
             material = Material.objects.get(id=material_id)
             if material.quantity_available >= quantity:
                 item, created = CartItem.objects.get_or_create(cart=cart, material=material)
                 item.quantity += quantity
+                item.remarks = remarks  # Set remarks
                 item.save()
                 material.quantity_available -= quantity
                 material.save()

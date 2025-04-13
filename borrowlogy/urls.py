@@ -27,5 +27,6 @@ urlpatterns = [
     path("", homepage, name="homepage"),
     path('equipment/', include('equipment.urls')),
     path('api/', include((router.urls, 'core_api'), namespace = 'core_api')),
+    path('api/cart/', include('cart.urls')),  # Include the cart app's URLs
     
 ]

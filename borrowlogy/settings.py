@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'authentication',
     'equipment',
     'transactions',
+    'cart',
+    'history',
     # 'request',
     
 ]
