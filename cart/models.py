@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from equipment.models import Equipment  # Assuming you have an Equipment model
+from history.models import TransactionHistory  # Assuming you have a TransactionHistory model
 
 class Material(models.Model):
     name = models.CharField(max_length=100)
@@ -11,13 +13,18 @@ class Material(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    remarks = models.TextField(blank=True, null=True)
+    TransactionHistory = models.ForeignKey(TransactionHistory, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE, null=True, blank=True)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField()
+    approved = models.BooleanField(default=False)  # Indicates if the item is approved
+
+    class Meta:
+        unique_together = ('cart', 'equipment')  # Prevent duplicate entries
 
     def __str__(self):
-        return f"{self.material.name} x {self.quantity if self.material else 'N/A'}"
+        return f"{self.equipment.name} {self.quantity if self.equipment else 'N/A'}"

@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.apps import apps
 
 class Request(models.Model):
     STATUS_CHOICES = [
@@ -10,7 +9,7 @@ class Request(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Requesting user
-    equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)  # Use the app name where Equipment is defined
+    equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)  # Equipment from inventory app
     quantity = models.PositiveIntegerField()  # Requested quantity
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Request status
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for request creation

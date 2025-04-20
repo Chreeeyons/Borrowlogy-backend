@@ -1,15 +1,27 @@
 # cart/serializers.py
+
 from rest_framework import serializers
-from .models import Cart, CartItem
+
+from authentication.serializers import UserSerializer
+from .models import Cart, CartItem, Equipment
+
+class EquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        fields = '__all__'
 
 class CartItemSerializer(serializers.ModelSerializer):
+    equipment = EquipmentSerializer()
+
     class Meta:
         model = CartItem
-        fields = ['id', 'cart', 'material', 'quantity', 'remarks']  # Include remarks
+        fields = ['id', 'equipment_id', 'cart_id', 'quantity', 'equipment']
 
 class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_only=True)  # Nest CartItemSerializer in CartSerializer
+    user = UserSerializer()  # Use the nested UserSerializer
+    items = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'items']  # Include CartItemSerializer for items
+        fields = ['id', 'user', 'status', 'items']
+
