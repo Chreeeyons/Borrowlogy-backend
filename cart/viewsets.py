@@ -1,6 +1,6 @@
 # cart/viewsets.py
 from rest_framework import viewsets
-from .models import Cart, CartItem, Material
+from .models import Cart, CartItem, Equipment
 from .serializers import CartSerializer, CartItemSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,25 +12,27 @@ class CartViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=False, methods=['post'])
     def add_item(self, request, pk=None):
-        cart = self.get_object()
-        material_id = request.data.get('material_id')
+        print("Request data:", request.data)  # Debugging line to check incoming data
+        user_id = request.data.get('user_id')  # Get the user ID from the request
+        equipment_id = request.data.get('equipment_id')
         quantity = int(request.data.get('quantity', 1))
-        remarks = request.data.get('remarks', '')  # Capture remarks
         try:
-            material = Material.objects.get(id=material_id)
-            if material.quantity_available >= quantity:
-                item, created = CartItem.objects.get_or_create(cart=cart, material=material)
+             # Get or create the cart for the user with status=False
+            cart, created = Cart.objects.get_or_create(user_id=user_id, status=False)
+            equipment = Equipment.objects.get(id=equipment_id)
+            if equipment.quantity >= quantity:
+                item, created = CartItem.objects.get_or_create(cart=cart, equipment=equipment)
                 item.quantity += quantity
-                item.remarks = remarks  # Set remarks
+                item.cart = cart  # Set the cart for the item
                 item.save()
-                material.quantity_available -= quantity
-                material.save()
+                equipment.quantity -= quantity
+                equipment.save()
                 return Response({'status': 'Item added to cart'})
             else:
                 return Response({'error': 'Not enough stock'}, status=400)
-        except Material.DoesNotExist:
+        except Equipment.DoesNotExist:
             return Response({'error': 'Material not found'}, status=404)
 
     @action(detail=True, methods=['post'])
@@ -46,3 +48,13 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response({'status': 'Item removed from cart'})
         except CartItem.DoesNotExist:
             return Response({'error': 'CartItem not found'}, status=404)
+
+    @action(detail=True, methods=['post'])
+    def clear_cart(self, request, pk=None):
+        cart = self.get_object()
+        for item in cart.items.all():
+            material = item.material
+            material.quantity_available += item.quantity  # Restore stock
+            material.save()
+            item.delete()  # Remove the item from the cart
+        return Response({'status': 'Cart cleared'})
