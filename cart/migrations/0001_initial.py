@@ -10,7 +10,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('equipment', '0004_remove_equipment_status_alter_equipment_quantity'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
