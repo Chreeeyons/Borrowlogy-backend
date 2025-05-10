@@ -47,14 +47,33 @@ class CartViewSet(viewsets.ModelViewSet):
         except Equipment.DoesNotExist:
             return Response({'error': 'Material not found'}, status=404)
 
-    # @action(detail=True, methods=['delete'])
-    # def remove_item(self, request, pk=None):
-    #     cart_id = request.data.get('cart_id')
-    #     try:
-    #         cart = CartItem.objects.delete(id=cart_id)
-    #         return Response({'status': 'cart cleared successfully'})
-    #     except CartItem.DoesNotExist:
-    #         return Response({'error': 'CartItem not found'}, status=404)
+    @action(detail=False, methods=['post'])
+    def remove_items(self, request, pk=None):
+        cart_id = request.data.get('cart_id')
+        equipment_ids = request.data.get('equipment_ids', [])
+
+        if not cart_id or not equipment_ids:
+            return Response({'error': 'Missing cart_id or equipment_ids'}, status=400)
+
+        try:
+            cart = Cart.objects.get(id=cart_id)
+            removed = []
+            for equipment_id in equipment_ids:
+                try:
+                    cart_item = CartItem.objects.get(cart=cart, equipment_id=equipment_id)
+                    equipment = cart_item.equipment
+                    equipment.quantity += cart_item.quantity
+                    equipment.save()
+                    cart_item.delete()
+                    removed.append(equipment_id)
+                except CartItem.DoesNotExist:
+                    continue  # skip if item doesn't exist
+
+            return Response({'status': 'Items removed', 'removed_ids': removed})
+        except Cart.DoesNotExist:
+            return Response({'error': 'Cart not found'}, status=404)
+
+
 
     @action(detail=False, methods=['post'])
     def clear_cart(self, request, pk=None):
