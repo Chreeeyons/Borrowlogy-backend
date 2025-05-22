@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/', include((router.urls, 'core_api'), namespace = 'core_api')),
     path('cart/', include('cart.urls')),  # Include the cart app's URLs
     path('history/', include('history.urls')),  # Include the history app's URLs
+    path('user/', include('authentication.urls')),  # Include the history app's URLs
+
 ]
