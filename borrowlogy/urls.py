@@ -29,5 +29,6 @@ urlpatterns = [
     path('cart/', include('cart.urls')),  # Include the cart app's URLs
     path('history/', include('history.urls')),  # Include the history app's URLs
     path('user/', include('authentication.urls')),  # Include the history app's URLs
+    path('api/', include('chemicals.urls')),  # Adjust 'chemicals' to your app name
 
 ]
