@@ -5,7 +5,7 @@ class ChemicalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chemical
         fields = [
-            'id', 'chemical_name', 'volume', 'volume_unit', 'brand_name',
+            'id', 'chemical_name', 'mass', 'brand_name',
             'is_hazardous', 'location', 'expiration_date'
         ]
 
