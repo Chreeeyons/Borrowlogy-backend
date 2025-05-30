@@ -2,12 +2,15 @@ from rest_framework import serializers
 from .models import Chemical
 
 class ChemicalSerializer(serializers.ModelSerializer):
+    hazard_type_display = serializers.CharField(source='get_hazard_type_display', read_only=True)
+
     class Meta:
         model = Chemical
         fields = [
             'id', 'chemical_name', 'mass', 'brand_name',
-            'is_hazardous', 'location', 'expiration_date'
+            'hazard_type', 'hazard_type_display', 'location', 'expiration_date'
         ]
+
 
     # # def validate(self, data):
     #     request = self.context.get('request')

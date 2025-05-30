@@ -16,17 +16,14 @@ class ChemicalViewSet(viewsets.ModelViewSet):
     # GET endpoint with optional filtering
     @action(detail=False, methods=['get'], permission_classes=[AllowAny])
     def get_chemicals(self, request):
-        is_hazardous = request.query_params.get('is_hazardous', None)
+        hazard_type = request.query_params.get('hazard_type', None)
         qs = Chemical.objects.all()
-        if is_hazardous is not None:
-            if is_hazardous.lower() == 'true':
-                qs = qs.filter(is_hazardous=True)
-            elif is_hazardous.lower() == 'false':
-                qs = qs.filter(is_hazardous=False)
+        if hazard_type:
+            qs = qs.filter(hazard_type=hazard_type)
 
         chemicals = qs.values(
             'id', 'chemical_name', 'mass', 'brand_name',
-            'is_hazardous', 'location', 'expiration_date'
+            'hazard_type', 'location', 'expiration_date'
         )
         return Response({'chemicals': list(chemicals)})
 
