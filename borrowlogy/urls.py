@@ -20,7 +20,7 @@ from authentication.views import homepage
 from .routers import router
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
     path("", homepage, name="homepage"),

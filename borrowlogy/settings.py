@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'cart',
     'history',
     'chemicals',
-    # 'request',
     
 ]
 
@@ -85,6 +84,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'borrowlogy.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOW_CREDENTIALS = True
 LOGIN_URL = ''
 
 LOGIN_URLS = ('', 'auth/login',)
