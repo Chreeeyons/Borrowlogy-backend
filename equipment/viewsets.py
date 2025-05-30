@@ -5,6 +5,8 @@ from .models import Equipment
 from .serializers import EquipmentSerializer
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from django.db import IntegrityError
+
 
 class EquipmentViewSet(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
@@ -21,16 +23,16 @@ class EquipmentViewSet(viewsets.ModelViewSet):
         print(equipment)
         return Response({'equipment': list(equipment)})
 
+
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def add_equipment(self, request):
-        """
-        Custom endpoint to add new equipment.
-        Accessible at /equipment/add_equipment/
-        """
         serializer = EquipmentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Equipment added successfully', 'equipment': serializer.data}, status=status.HTTP_201_CREATED)
+            try:
+                serializer.save()
+                return Response({'message': 'Equipment added successfully', 'equipment': serializer.data}, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response({'error': 'Equipment with this name already exists.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['put', 'patch'], permission_classes=[AllowAny])
