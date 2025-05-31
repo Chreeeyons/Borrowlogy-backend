@@ -87,15 +87,17 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def get_cart(self, request):
         user_id = request.data.get('user_id')
+        print
         try:
             cart = Cart.objects.get(user_id=user_id, status=False)
             serializer = CartSerializer(cart)
+            print(serializer.data)
             return Response(serializer.data)
         except Cart.DoesNotExist:
             return Response({'error': 'No active cart found'}, status=404)
 
         
-    @action(detail=False, methods=['post', 'patch'])
+    @action(detail=False, methods=['patch'])
     def update_item_quantity(self, request):
         cart_id = request.data.get('cart_id')
         equipment_id = request.data.get('equipment_id')
@@ -120,4 +122,3 @@ class CartViewSet(viewsets.ModelViewSet):
             import traceback
             traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
