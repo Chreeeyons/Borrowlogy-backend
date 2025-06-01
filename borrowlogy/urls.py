@@ -16,18 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authentication.views import homepage
 from .routers import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
-    path("", homepage, name="homepage"),
     path('equipment/', include('equipment.urls')),
     path('api/', include((router.urls, 'core_api'), namespace = 'core_api')),
     path('cart/', include('cart.urls')),  # Include the cart app's URLs
     path('history/', include('history.urls')),  # Include the history app's URLs
     path('user/', include('authentication.urls')),  # Include the history app's URLs
+    path('api/', include('chemicals.urls')),  # Adjust 'chemicals' to your app name
 
 ]

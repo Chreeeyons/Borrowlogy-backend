@@ -6,6 +6,8 @@ from .serializers import CartSerializer, CartItemSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Sum
+from rest_framework import status
+
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
@@ -104,7 +106,6 @@ class CartViewSet(viewsets.ModelViewSet):
         try:
             # Get or create the cart for the user with status=False
             cart, created = Cart.objects.get_or_create(user_id=request.data.get('user_id'), status=False)
-
             # Get all CartItems for the cart
             cart_items = CartItem.objects.filter(cart=cart)
 
@@ -147,3 +148,45 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response({'status': 'cart approved successfully'}, status=200)
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=404)
+        
+
+    @action(detail=False, methods=['patch'])
+    def update_item_quantity(self, request):
+        cart_id = request.data.get('cart_id')
+        equipment_id = request.data.get('equipment_id')
+        quantity = request.data.get('quantity')
+
+        try:
+            quantity = int(quantity)
+            cart_item = CartItem.objects.get(cart_id=cart_id, equipment_id=equipment_id)
+            print(cart_item.quantity, quantity)
+            equipment = Equipment.objects.get(id=equipment_id)
+            if quantity > cart_item.quantity:
+                diff = quantity - cart_item.quantity
+                if equipment.quantity < diff:
+                    return Response({'error': 'Not enough stock'}, status=400)
+                equipment.quantity -= diff
+            elif quantity < cart_item.quantity:
+                diff = cart_item.quantity - quantity
+                equipment.quantity += diff
+            # If equal, do nothing
+            equipment.save()
+
+            cart_item.quantity = quantity
+            cart_item.save()
+
+           
+            return Response({
+                "success": True,
+                "cart_item": {
+                    "cart_id": cart_id,
+                    "equipment_id": equipment_id,
+                    "quantity": quantity
+                }
+            })
+        except CartItem.DoesNotExist:
+            return Response({"error": "Cart item not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

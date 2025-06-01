@@ -1,51 +1,49 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.models import User  # Import Django's built-in User model
+import json
+from django.contrib.auth import get_user_model, login
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views import View
+from .models import ApprovedGoogleUser
 
-def login_view(request):
-    form = AuthenticationForm(request, data=request.POST or None)
+User = get_user_model()
 
-    if request.method == "POST":
-        if form.is_valid():
-            user = form.get_user()
+def is_approved_google_user(email):
+    return email.endswith("@up.edu.ph") and ApprovedGoogleUser.objects.filter(email=email).exists()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GoogleLoginView(View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            name = data.get("name")
+            google_id = data.get("google_id")
+
+            if not email:
+                return JsonResponse({"error": "Email is required"}, status=400)
+
+            if not is_approved_google_user(email):
+                return JsonResponse({"error": "Unauthorized: Not an approved UP user"}, status=403)
+
+            # Get or create user
+            user, _ = User.objects.get_or_create(email=email, defaults={
+                "name": name,
+                "google_id": google_id,
+                "user_type": "lab_technician",  # Or "borrower" if you want to separate roles
+                "username": email.split("@")[0],
+            })
+
             login(request, user)
-            return redirect("menu_page")
-        else:
-            # Add error messages
-            error_message = "Invalid Email Address or Password"
-            return render(request, "auth/login.html", {"form": form, "error_message": error_message})
 
-    return render(request, "auth/login.html", {"form": form})
-
-def brwlogin_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")  # Ensure you collect passwords
-
-        if not username.endswith("@up.edu.ph"):
-            messages.error(request, "Please enter a valid UP mail.")
-            return render(request, "auth/brwlogin.html")
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect("brw_equipments")  # Redirect after successful login
-        else:
-            messages.error(request, "Invalid credentials. Please try again.")
-    
-    return render(request, "auth/brwlogin.html")
-
-def homepage(request):
-    return render(request, "homepage.html")  # Django will now find it in templates/
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('homepage')  # Redirect to homepage after logout
-
-def forgot_password_view(request):
-    return render(request, 'LTforgot-password.html')
+            return JsonResponse({
+                "message": "Login successful",
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "name": user.name,
+                    "user_type": user.user_type,
+                }
+            })
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

@@ -41,14 +41,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-
+    'django_filters',
+    'django_extensions',
+    
     #local apps
     'authentication',
     'equipment',
     'transactions',
     'cart',
     'history',
-    # 'request',
+    'chemicals',
     
 ]
 
@@ -84,6 +86,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'borrowlogy.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOW_CREDENTIALS = True
 LOGIN_URL = ''
 
 LOGIN_URLS = ('', 'auth/login',)
@@ -156,4 +159,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         #'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
 }
