@@ -18,3 +18,9 @@ class User(AbstractUser):
             self.username = self.email.split('@')[0]  # Set username from email
         super().save(*args, **kwargs)
 
+
+class ApprovedGoogleUser(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email

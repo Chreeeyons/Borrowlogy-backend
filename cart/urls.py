@@ -7,7 +7,5 @@ router = DefaultRouter()
 router.register(r'cart', CartViewSet, basename='cart')
 
 urlpatterns = [
-    # path('get_cart/<int:user_id>', CartViewSet.as_view({'get': 'get_cart'}), name='get_cart'),
-    path('', include(router.urls)),  # Include all ViewSet routes
-    #path('cart/add_item', CartViewSet.as_view({'post': 'add_item'}), name='add_item'),
+    path('', include(router.urls)),    
 ]

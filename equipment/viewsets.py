@@ -20,7 +20,6 @@ class EquipmentViewSet(viewsets.ModelViewSet):
         Accessible at /users/custom/
         """
         equipment = Equipment.objects.all().values('id','name', 'quantity')
-        print(equipment)
         return Response({'equipment': list(equipment)})
 
 
