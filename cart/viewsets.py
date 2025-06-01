@@ -102,11 +102,12 @@ class CartViewSet(viewsets.ModelViewSet):
         cart_id = request.data.get('cart_id')
         equipment_id = request.data.get('equipment_id')
         quantity = request.data.get('quantity')
-
+        
         try:
             quantity = int(quantity)
             cart_item = CartItem.objects.get(cart_id=cart_id, equipment_id=equipment_id)
             cart_item.quantity = quantity
+            
             cart_item.save()
             return Response({
                 "success": True,
