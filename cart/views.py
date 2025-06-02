@@ -3,10 +3,14 @@ from equipment.models import Equipment
 from history.models import TransactionHistory
 from .models import Cart, CartItem, Material
 from .serializers import CartSerializer, CartItemSerializer
+# from chemicals.models import Chemical
+# from .models import Cart, ChemicalCartItem
+# from .serializers import ChemicalSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Sum
 from rest_framework import status
+
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -190,3 +194,4 @@ class CartViewSet(viewsets.ModelViewSet):
             import traceback
             traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
