@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from equipment.models import Equipment  # Assuming you have an Equipment model
 from history.models import TransactionHistory  # Assuming you have a TransactionHistory model
+from chemicals.models import Chemical
 
 class Material(models.Model):
     name = models.CharField(max_length=100)
@@ -20,6 +21,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE, null=True, blank=True)
     equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE, null=True, blank=True)
+    chemicals = models.ForeignKey(Chemical, on_delete=models.CASCADE, null=True, blank=True)  # Link to Material model
     quantity = models.PositiveIntegerField()
     approved = models.BooleanField(default=False)  # Indicates if the item is approved
 
@@ -28,3 +30,4 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.equipment.name} {self.quantity if self.equipment else 'N/A'}"
+

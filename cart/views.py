@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from chemicals.models import Chemical
 from equipment.models import Equipment
 from history.models import TransactionHistory
 from .models import Cart, CartItem, Material
@@ -20,34 +21,62 @@ class CartViewSet(viewsets.ModelViewSet):
     def add_item(self, request, pk=None):
         user_id = request.data.get('user_id')  # Get the user ID from the request
         equipment_id = request.data.get('equipment_id')
-        quantity = int(request.data.get('quantity'))
+        chemical_id = request.data.get('chemical_id')
+        quantity = int(request.data.get('quantity', 1))
+        
         try:
              # Get or create the cart for the user with status=False
             cart, created = Cart.objects.get_or_create(user_id=user_id, status=False)
-            equipment = Equipment.objects.get(id=equipment_id)
-            if equipment.quantity >= quantity:
-                cart_items = CartItem.objects.filter(cart=cart, equipment=equipment)
 
-                if cart_items.exists():
-                    # If duplicates exist, sum their quantities and consolidate them
-                    total_quantity = sum(item.quantity for item in cart_items)
-                    cart_item = cart_items.first()  # Use the first item
-                    cart_item.quantity = total_quantity + quantity  # Update the quantity
-                    cart_item.save()
+            if equipment_id:
+                equipment = Equipment.objects.get(id=equipment_id)
+                if equipment.quantity >= quantity:
+                    cart_items = CartItem.objects.filter(cart=cart, equipment=equipment)
 
-                    # Delete the duplicate items (except the first one)
-                    cart_items.exclude(id=cart_item.id).delete()
+                    if cart_items.exists():
+                        # If duplicates exist, sum their quantities and consolidate them
+                        total_quantity = sum(item.quantity for item in cart_items)
+                        cart_item = cart_items.first()  # Use the first item
+                        cart_item.quantity = total_quantity + quantity  # Update the quantity
+                        cart_item.save()
+
+                        # Delete the duplicate items (except the first one)
+                        cart_items.exclude(id=cart_item.id).delete()
+                    else:
+                        # If no duplicates exist, create a new CartItem
+                        cart_item = CartItem.objects.create(cart=cart, equipment=equipment, quantity=quantity)
+                    equipment.quantity -= quantity
+                    equipment.save()
+                
+                    return Response({'status': 'Item added to cart'})
                 else:
-                    # If no duplicates exist, create a new CartItem
-                    cart_item = CartItem.objects.create(cart=cart, equipment=equipment, quantity=quantity)
-                equipment.quantity -= quantity
-                equipment.save()
-            
-                return Response({'status': 'Item added to cart'})
-            else:
-                return Response({'error': 'Not enough stock'}, status=400)
+                    return Response({'error': 'Not enough stock'}, status=400)
+            elif chemical_id:
+                chemical = Chemical.objects.get(id=chemical_id)
+                if chemical.mass >= quantity:
+                    cart_items = CartItem.objects.filter(cart=cart, chemicals=chemical)
+
+                    if cart_items.exists():
+                        # If duplicates exist, sum their quantities and consolidate them
+                        total_quantity = sum(item.quantity for item in cart_items)
+                        cart_item = cart_items.first()  # Use the first item
+                        cart_item.quantity = total_quantity + quantity  # Update the quantity
+                        cart_item.save()
+
+                        # Delete the duplicate items (except the first one)
+                        cart_items.exclude(id=cart_item.id).delete()
+                    else:
+                        # If no duplicates exist, create a new CartItem
+                        cart_item = CartItem.objects.create(cart=cart, chemicals=chemical, quantity=quantity)
+                    chemical.mass -= quantity
+                    chemical.save()
+                
+                    return Response({'status': 'Chemical added to cart'})
+                else:
+                    return Response({'error': 'Not enough stock'}, status=400)
         except Equipment.DoesNotExist:
             return Response({'error': 'Material not found'}, status=404)
+
 
     @action(detail=False, methods=['post'])
     def remove_items(self, request, pk=None):
@@ -62,12 +91,23 @@ class CartViewSet(viewsets.ModelViewSet):
             removed = []
             for equipment_id in equipment_ids:
                 try:
-                    cart_item = CartItem.objects.get(cart=cart, equipment_id=equipment_id)
-                    equipment = cart_item.equipment
-                    equipment.quantity += cart_item.quantity
-                    equipment.save()
-                    cart_item.delete()
-                    removed.append(equipment_id)
+                    item_type = equipment_id.split('_')[0]  # Determine if it's equipment or chemical
+                    item_id = equipment_id.split('_')[-1]  # Extract the ID from the equipment_id
+                    if item_type == 'equip':
+                        cart_item = CartItem.objects.get(cart=cart, equipment_id=item_id)
+                        equipment = cart_item.equipment
+                        equipment.quantity += cart_item.quantity
+                        equipment.save()
+                        cart_item.delete()
+                        removed.append(equipment_id)
+                    elif item_type == 'chem':
+                        cart_item = CartItem.objects.get(cart=cart, chemicals_id=item_id)
+                        chemicals = cart_item.chemicals
+                        chemicals.mass += cart_item.quantity
+                        chemicals.save()
+                        cart_item.delete()
+                        removed.append(equipment_id)
+
                 except CartItem.DoesNotExist:
                     continue  # skip if item doesn't exist
 
@@ -112,9 +152,9 @@ class CartViewSet(viewsets.ModelViewSet):
             # Group and sum quantities manually
             grouped_items = {}
             for item in cart_items:
-                equipment_id = item.equipment.id
-                equipment_name = item.equipment.name
-                if equipment_id not in grouped_items:
+                equipment_id = "equip_"+str(item.equipment.id) if item.equipment else "chem_"+str(item.chemicals.id)
+                equipment_name = item.equipment.name if item.equipment else item.chemicals.chemical_name 
+                if equipment_id not in grouped_items:   
                     grouped_items[equipment_id] = {
                         'equipment_id': equipment_id,
                         'equipment_name': equipment_name,
@@ -158,32 +198,66 @@ class CartViewSet(viewsets.ModelViewSet):
 
         try:
             quantity = int(quantity)
-            cart_item = CartItem.objects.get(cart_id=cart_id, equipment_id=equipment_id)
-            print(cart_item.quantity, quantity)
-            equipment = Equipment.objects.get(id=equipment_id)
-            if quantity > cart_item.quantity:
-                diff = quantity - cart_item.quantity
-                if equipment.quantity < diff:
-                    return Response({'error': 'Not enough stock'}, status=400)
-                equipment.quantity -= diff
-            elif quantity < cart_item.quantity:
-                diff = cart_item.quantity - quantity
-                equipment.quantity += diff
-            # If equal, do nothing
-            equipment.save()
+            item_type = equipment_id.split('_')[0]  # Determine if it's equipment or chemical
+            item_id = equipment_id.split('_')[-1]  # Extract the ID from the equipment_id
+            cart_item = None
+            if item_type == 'equip':
+                # If it's equipment, get the CartItem by equipment_id
+                cart_item = CartItem.objects.get(cart_id=cart_id, equipment_id=item_id)
+                print(cart_item.quantity, quantity)
+                equipment = Equipment.objects.get(id=item_id)
+                if quantity > cart_item.quantity:
+                    diff = quantity - cart_item.quantity
+                    if equipment.quantity < diff:
+                        return Response({'error': 'Not enough stock'}, status=400)
+                    equipment.quantity -= diff
+                elif quantity < cart_item.quantity:
+                    diff = cart_item.quantity - quantity
+                    equipment.quantity += diff
+                # If equal, do nothing
+                equipment.save()
 
-            cart_item.quantity = quantity
-            cart_item.save()
+                cart_item.quantity = quantity
+                cart_item.save()
 
-           
-            return Response({
-                "success": True,
-                "cart_item": {
-                    "cart_id": cart_id,
-                    "equipment_id": equipment_id,
-                    "quantity": quantity
-                }
-            })
+            
+                return Response({
+                    "success": True,
+                    "cart_item": {
+                        "cart_id": cart_id,
+                        "equipment_id": equipment_id,
+                        "quantity": quantity
+                    }
+                })
+            elif item_type == 'chem':
+                # If it's a chemical, get the CartItem by chemical_id
+                cart_item = CartItem.objects.get(cart_id=cart_id, chemicals_id=item_id)
+                print(cart_item.quantity, quantity)
+                chemical = Chemical.objects.get(id=item_id)
+                if quantity > cart_item.quantity:
+                    diff = quantity - cart_item.quantity
+                    if chemical.mass < diff:
+                        return Response({'error': 'Not enough stock'}, status=400)
+                    chemical.mass -= diff
+                elif quantity < cart_item.quantity:
+                    diff = cart_item.quantity - quantity
+                    chemical.mass += diff
+                # If equal, do nothing
+                chemical.save()
+
+                cart_item.quantity = quantity
+                cart_item.save()
+
+            
+                return Response({
+                    "success": True,
+                    "cart_item": {
+                        "cart_id": cart_id,
+                        "equipment_id": equipment_id,
+                        "quantity": quantity
+                    }
+                })
+                
         except CartItem.DoesNotExist:
             return Response({"error": "Cart item not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

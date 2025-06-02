@@ -1,5 +1,7 @@
 # cart/viewsets.py
 from rest_framework import viewsets
+
+from chemicals.models import Chemical
 from .models import Cart, CartItem, Equipment
 from .serializers import CartSerializer, CartItemSerializer
 from rest_framework.decorators import action
@@ -26,28 +28,42 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Authentication required'}, status=401)
 
         equipment_id = request.data.get('equipment_id')
+        chemical_id = request.data.get('chemical_id')
         quantity = int(request.data.get('quantity', 1))
 
         try:
             cart, created = Cart.objects.get_or_create(user=user, status=False)
-            equipment = Equipment.objects.get(id=equipment_id)
-            if equipment.quantity >= quantity:
-                item, created = CartItem.objects.get_or_create(cart=cart, equipment=equipment)
-                item.quantity += quantity
-                item.save()
-                equipment.quantity -= quantity
-                equipment.save()
-                return Response({'status': 'Item added to cart'})
-            else:
-                return Response({'error': 'Not enough stock'}, status=400)
+            if equipment_id:
+                equipment = Equipment.objects.get(id=equipment_id)
+                if equipment.quantity >= quantity:
+                    item, created = CartItem.objects.get_or_create(cart=cart, equipment=equipment)
+                    item.quantity += quantity
+                    item.save()
+                    equipment.quantity -= quantity
+                    equipment.save()
+                    return Response({'status': 'Item added to cart'})
+                else:
+                    return Response({'error': 'Not enough stock'}, status=400)
+            elif chemical_id:
+                chemical = Chemical.objects.get(id=chemical_id)
+                if chemical.mass >= quantity: #Quantity is mass for chemicals
+                    item, created = CartItem.objects.get_or_create(cart=cart, chemicals=chemical)
+                    item.quantity += quantity
+                    item.save()
+                    chemical.quantity -= quantity
+                    chemical.save()
+                    return Response({'status': 'Chemical added to cart'})
+                else:
+                    return Response({'error': 'Not enough stock'}, status=400)
         except Equipment.DoesNotExist:
-            return Response({'error': 'Material not found'}, status=404)
+            return Response({'error': 'Item not found'}, status=404)
 
 
     @action(detail=False, methods=['post'])
     def remove_items(self, request):
         cart_id = request.data.get('cart_id')
         equipment_ids = request.data.get('equipment_ids', [])
+
 
         if not cart_id or not equipment_ids:
             return Response({"error": "Missing cart_id or equipment_ids"}, status=400)
