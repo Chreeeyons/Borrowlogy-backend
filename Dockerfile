@@ -35,7 +35,7 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=5 \
 
 # Run the application
 CMD gunicorn borrowlogy.wsgi:application \
-    --bind 0.0.0.0:$PORT
+    --bind 0.0.0.0:$PORT \
     --workers 4 \
     --timeout 120 \
     --log-level info \
