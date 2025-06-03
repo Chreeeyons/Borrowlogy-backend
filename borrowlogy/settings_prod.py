@@ -36,9 +36,11 @@ DATABASES = {
         'OPTIONS': {
             'sslmode': 'require',
             'connect_timeout': 10,
+            'hostaddr': os.environ.get('PGHOST'),  # Force TCP/IP connection
         },
         'CONN_MAX_AGE': 60,
         'CONN_HEALTH_CHECKS': True,
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
 
