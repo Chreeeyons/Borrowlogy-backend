@@ -8,9 +8,17 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
+import sys # Import sys to print to stderr
+
+print("Starting WSGI application loading...") # Added logging
+print(f"Current Python path: {sys.path}") # Added logging
 
 from django.core.wsgi import get_wsgi_application
 
+print(f"DJANGO_SETTINGS_MODULE before setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}") # Added logging
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'borrowlogy.settings')
+print(f"DJANGO_SETTINGS_MODULE after setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}") # Added logging
 
+print("Getting WSGI application...") # Added logging
 application = get_wsgi_application()
+print("WSGI application loaded successfully.") # Added logging
