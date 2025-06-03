@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-(s!!z4(rwa72me=^n^j@0p5)#h%af7@e18ke@1!+-1v2b6)k0r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']  # Allow all hosts in production
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Allow all hosts in production
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -104,8 +104,18 @@ LOGIN_URLS = ('', 'auth/login',)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT'),
+        'OPTIONS': {
+            'sslmode': 'require',
+            'connect_timeout': 10,
+        },
+        'CONN_MAX_AGE': 60,
+        'CONN_HEALTH_CHECKS': True,
     }
 }
 
