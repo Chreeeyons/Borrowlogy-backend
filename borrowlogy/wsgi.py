@@ -8,17 +8,31 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
-import sys # Import sys to print to stderr
+import sys
+import logging
 
-print("Starting WSGI application loading...") # Added logging
-print(f"Current Python path: {sys.path}") # Added logging
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger(__name__)
 
-from django.core.wsgi import get_wsgi_application
+try:
+    logger.info("Starting WSGI application loading...")
+    logger.info(f"Current Python path: {sys.path}")
 
-print(f"DJANGO_SETTINGS_MODULE before setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}") # Added logging
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'borrowlogy.settings')
-print(f"DJANGO_SETTINGS_MODULE after setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}") # Added logging
+    from django.core.wsgi import get_wsgi_application
 
-print("Getting WSGI application...") # Added logging
-application = get_wsgi_application()
-print("WSGI application loaded successfully.") # Added logging
+    logger.info(f"DJANGO_SETTINGS_MODULE before setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}")
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'borrowlogy.settings_prod')
+    logger.info(f"DJANGO_SETTINGS_MODULE after setdefault: {os.environ.get('DJANGO_SETTINGS_MODULE')}")
+
+    logger.info("Getting WSGI application...")
+    application = get_wsgi_application()
+    logger.info("WSGI application loaded successfully.")
+
+except Exception as e:
+    logger.error(f"Failed to load WSGI application: {str(e)}", exc_info=True)
+    raise

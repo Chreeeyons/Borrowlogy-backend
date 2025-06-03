@@ -25,7 +25,15 @@ logger = logging.getLogger(__name__)
 
 def health_check(request):
     logger.info("Health check endpoint hit")
-    return HttpResponse("OK", status=200)
+    try:
+        # Check if the database is accessible
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        return HttpResponse("OK", status=200, content_type="text/plain")
+    except Exception as e:
+        logger.error(f"Health check failed: {str(e)}")
+        return HttpResponse("Service Unavailable", status=503, content_type="text/plain")
 
 urlpatterns = [
     path('', health_check),  # Health check endpoint

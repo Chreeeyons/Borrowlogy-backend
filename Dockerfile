@@ -25,14 +25,23 @@ ENV DJANGO_ALLOWED_HOSTS=*
 RUN mkdir -p /app/staticfiles
 
 # Collect static files
+RUN python manage.py migrate --noinput
 RUN python manage.py collectstatic --noinput
 
 # Expose the port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=5 \
+HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:8000/ || exit 1
 
-# Run the application
-CMD ["gunicorn", "borrowlogy.wsgi:application", "--bind", "0.0.0.0:$PORT", "--workers", "4", "--timeout", "300", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-", "--capture-output"]
+# Run the application with proper logging
+CMD gunicorn borrowlogy.wsgi:application \
+     --bind 0.0.0.0:${PORT:-8000} \
+     --workers 4 \
+     --timeout 300 \
+     --log-level info \
+     --access-logfile - \
+     --error-logfile - \
+     --capture-output \
+     --preload
