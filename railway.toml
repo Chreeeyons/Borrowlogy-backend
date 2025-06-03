@@ -1,9 +1,8 @@
 [build]
-builder = "nixpacks"
-buildCommand = "python manage.py collectstatic --noinput"
+builder = "DOCKERFILE"
 
 [deploy]
-startCommand = "gunicorn borrowlogy.wsgi:application"
+startCommand = "gunicorn borrowlogy.wsgi:application --bind 0.0.0.0:$PORT"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
