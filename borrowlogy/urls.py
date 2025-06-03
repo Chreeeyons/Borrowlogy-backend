@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .routers import router
+from .views import health_check  # Import the new health_check view
 
 urlpatterns = [
+    path('', health_check, name='health_check'),  # Map root URL to health_check view
     path('admin/', admin.site.urls),
     path('transactions/', include('transactions.urls')),
     path('auth/', include('authentication.urls')),
