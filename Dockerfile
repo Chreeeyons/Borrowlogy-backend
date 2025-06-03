@@ -13,4 +13,4 @@ ENV DJANGO_SETTINGS_MODULE=borrowlogy.settings_prod
 RUN python manage.py collectstatic --noinput
 
 # Command to run the application using Gunicorn
-CMD gunicorn borrowlogy.wsgi:application --bind 0.0.0.0:$PORT -w 4 -t 4 --log-file - --access-logfile - 
+CMD sh -c "gunicorn borrowlogy.wsgi:application --bind 0.0.0.0:$PORT -w 4 -t 4 --log-file - --access-logfile -" 
