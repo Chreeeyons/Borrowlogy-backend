@@ -19,8 +19,12 @@ from django.urls import path, include
 from .routers import router
 from .views import health_check
 from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def health_check(request):
+    logger.info("Health check endpoint hit")
     return HttpResponse("OK", status=200)
 
 urlpatterns = [
