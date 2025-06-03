@@ -4,6 +4,6 @@ builder = "DOCKERFILE"
 [deploy]
 startCommand = "gunicorn borrowlogy.wsgi:application --bind 0.0.0.0:$PORT -w 4 -t 4 --log-file - --access-logfile -"
 healthcheckPath = "/"
-healthcheckTimeout = 100
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10 
