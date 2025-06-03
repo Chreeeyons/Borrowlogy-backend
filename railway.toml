@@ -1,9 +1,9 @@
 [build]
 builder = "nixpacks"
-buildCommand = "python manage.py collectstatic --noinput"
+buildCommand = "python manage.py collectstatic --settings=borrowlogy.settings_prod --noinput"
 
 [deploy]
-startCommand = "gunicorn borrowlogy.wsgi:application"
+startCommand = "gunicorn borrowlogy.wsgi:application --env DJANGO_SETTINGS_MODULE=borrowlogy.settings_prod"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
