@@ -27,15 +27,15 @@ RUN mkdir -p /app/staticfiles
 RUN python manage.py collectstatic --noinput
 
 # Expose the port
-EXPOSE 8000
+EXPOSE $PORT
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
+HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=5 \
+    CMD curl -f http://localhost:$PORT/ || exit 1
 
 # Run the application
 CMD gunicorn borrowlogy.wsgi:application \
-    --bind 0.0.0.0:8000 \
+    --bind 0.0.0.0:$PORT \
     --workers 4 \
     --timeout 120 \
     --log-level info \
