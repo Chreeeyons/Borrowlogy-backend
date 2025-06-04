@@ -107,7 +107,7 @@ LOGIN_URLS = ('', 'auth/login',)
 DATABASES = {
     'default': dj_database_url.config(
         # default=os.environ.get('DATABASE_URL'),
-        default='postgresql://postgres:cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv@metro.proxy.rlwy.net:56801/railway'
+        default='postgresql://postgres:cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv@metro.proxy.rlwy.net:56801/railway',
         conn_max_age=60,
         conn_health_checks=True,
     )
