@@ -12,8 +12,8 @@ media/
 *.bak
 
 # Django Migrations #
-**/migrations/*.py
-!**/migrations/__init__.py
+# **/migrations/*.py
+# !**/migrations/__init__.py
 
 # Python Packages #
 *.egg-info/
