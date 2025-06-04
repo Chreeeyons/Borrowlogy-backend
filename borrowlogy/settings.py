@@ -105,12 +105,14 @@ LOGIN_URLS = ('', 'auth/login',)
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # default=os.environ.get('DATABASE_URL'),
-        default='postgresql://postgres:cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv@metro.proxy.rlwy.net:56801/railway',
-        conn_max_age=60,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv',
+        'HOST': 'metro.proxy.rlwy.net',
+        'PORT': '56801',
+    }
 }
 
 
