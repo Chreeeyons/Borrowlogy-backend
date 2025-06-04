@@ -28,21 +28,22 @@ CORS_ALLOWED_ORIGINS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGDATABASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSWORD'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': os.environ.get('PGPORT'),
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv',
+        'HOST': 'metro.proxy.rlwy.net',
+        'PORT': '56801',
         'OPTIONS': {
             'sslmode': 'require',
             'connect_timeout': 10,
-            'hostaddr': os.environ.get('PGHOST'),  # Force TCP/IP connection
+            'hostaddr': 'metro.proxy.rlwy.net',  # Force TCP/IP connection
         },
         'CONN_MAX_AGE': 60,
         'CONN_HEALTH_CHECKS': True,
         'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
+
 
 # Logging configuration
 LOGGING = {
