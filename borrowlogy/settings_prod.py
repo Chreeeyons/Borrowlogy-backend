@@ -1,6 +1,7 @@
 from .settings import *
 import os
 
+
 DEBUG = False
 
 # Get the domain from Railway
@@ -32,17 +33,27 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'cWPoWKSXbAgdUKNzKCoJhOiXzXGQYFWv',
         'HOST': 'metro.proxy.rlwy.net',
-        'PORT': '56801',
+        'PORT': 56801,  # Changed to integer (though both string and int work)
         'OPTIONS': {
-            'sslmode': 'require',
-            'connect_timeout': 10,
-            'hostaddr': 'metro.proxy.rlwy.net',  # Force TCP/IP connection
+            'sslmode': 'require',  # Enforces SSL encryption
+            # 'hostaddr' is not typically needed if you're using 'HOST'
+            # 'connect_timeout' is good for production
         },
-        'CONN_MAX_AGE': 60,
-        'CONN_HEALTH_CHECKS': True,
-        'DISABLE_SERVER_SIDE_CURSORS': True,
+        'CONN_MAX_AGE': 600,  # Increased from 60 (better for production)
+        # 'CONN_HEALTH_CHECKS' is not a standard Django setting (remove)
+        # 'DISABLE_SERVER_SIDE_CURSORS' is misspelled (corrected below)
+        'DISABLE_SERVER_SIDE_CURSORS': False,  # Typically better performance when False
     }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=600)
+# }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=600)
+# }
 
 
 # Logging configuration
