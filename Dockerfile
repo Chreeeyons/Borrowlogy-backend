@@ -28,22 +28,23 @@ RUN touch /app/authentication/migrations/__init__.py
 
 # Create a script to handle migrations and startup
 RUN echo '#!/bin/bash\n\
-echo "Starting database migrations..."\n\
-python manage.py makemigrations authentication --noinput\n\
-echo "Running migrations..."\n\
-python manage.py migrate --noinput\n\
 echo "Collecting static files..."\n\
 python manage.py collectstatic --noinput\n\
 echo "Starting Gunicorn server..."\n\
 exec gunicorn borrowlogy.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 4 --timeout 300 --log-level debug --access-logfile - --error-logfile - --capture-output --preload\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
+# echo "Starting database migrations..."\n\
+# python manage.py makemigrations authentication --noinput\n\
+# echo "Running migrations..."\n\
+# python manage.py migrate --noinput\n\
+
 # Expose the port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8000/ || exit 1
+#HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 \
+    #CMD curl -f http://localhost:8000/ || exit 1
 
 # Use the startup script
 CMD ["/app/start.sh"]
