@@ -28,6 +28,10 @@ RUN touch /app/authentication/migrations/__init__.py
 
 # Create a script to handle migrations and startup
 RUN echo '#!/bin/bash\n\
+echo "Starting database migrations..."\n\
+python manage.py makemigrations authentication --noinput\n\
+echo "Running migrations..."\n\
+python manage.py migrate --noinput\n\
 echo "Collecting static files..."\n\
 python manage.py collectstatic --noinput\n\
 echo "Starting Gunicorn server..."\n\
