@@ -34,6 +34,8 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from cart.models import Cart, CartItem
 from .models import User
 from .serializers import UserSerializer
 from history.models import TransactionHistory
@@ -78,9 +80,41 @@ class UserViewSet(viewsets.ModelViewSet):
         for user in users:
         
             item = TransactionHistory.objects.filter(borrower_id=user['id'])
+            
 
             # Add the serialized cart data to each history record
-            history_data = item.values('id', 'status', 'borrow_date', 'return_date')
+            history_data = item.values('id', 'status', 'borrow_date', 'return_date', 'labtech_remarks', 'remarks', 'cart')
+            for history in history_data:
+                print(history["cart"])
+                cart, created = Cart.objects.filter(id=history['cart']).first(), False
+                # Get all CartItems for the cart
+                cart_items = CartItem.objects.filter(cart=cart)#.values('id', 'return_quantity', 'return_date', 'approved')
+
+                # Group and sum quantities manually
+                grouped_items = {}
+                for item in cart_items:
+                    equipment_id = "equip_"+str(item.equipment.id) if item.equipment else "chem_"+str(item.chemicals.id)
+                    equipment_name = item.equipment.name if item.equipment else item.chemicals.chemical_name 
+                    if equipment_id not in grouped_items:   
+                        grouped_items[equipment_id] = {
+                            'equipment_id': equipment_id,
+                            'equipment_name': equipment_name,
+                            'return_quantity': item.return_quantity,
+                            'return_date': item.return_date,
+                            'total_quantity': 0
+                        }
+                    grouped_items[equipment_id]['total_quantity'] += item.quantity
+
+                # Convert grouped_items to a list
+                grouped_items_list = list(grouped_items.values())
+                history['cart_items'] = grouped_items_list
+
+                # history['cart_items'] = Cart_Items.objects.filter(id=history['cart']).values('id', 'status', 'items')
+                # history['cart_items'] = list(history['cart_items'])
+                # Get the cart items for each history record
+                #if history['cart']:
+                    #history['cart']['items'] = Cart.objects.filter(id=history['cart_id']).values('id', 'status', 'items')
+             #cart = Cart.objects.filter(cart_id=history_data['id']).values('id', 'status')
 
             user['transactions'] = history_data
 
@@ -117,6 +151,52 @@ class UserViewSet(viewsets.ModelViewSet):
     #         except User.DoesNotExist:
     #             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     
+    @action(detail=False, methods=['patch'], permission_classes=[AllowAny])
+    def update_history(self, request, pk=None):
+        items = request.data.get('items', [])
+        transaction_id = request.data.get('transaction_id')
+        cart_id = request.data.get('cart_id')
+        remarks = request.data.get('remarks', '')
+  
+        if not items:
+            return Response({'error': 'No items provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        transaction = TransactionHistory.objects.get(id=transaction_id)
+
+        for item in items:
+            print(item['equipment_id'])
+            item_type = item['equipment_id'].split('_')[0]  # Determine if it's equipment or chemical
+            item_id = item['equipment_id'].split('_')[-1]  # Extract the ID from the equipment_id
+            print(cart_id, )
+            if item_type == 'equip':
+                    cart_item = CartItem.objects.get(cart_id=cart_id, equipment=item_id)
+                    equipment = cart_item.equipment
+                    equipment.quantity += cart_item.quantity #item['return_quantity']
+                    cart_item.return_quantity =  cart_item.quantity #item['return_quantity']
+                    cart_item.return_date = datetime.date.today()  # Set return date to today
+                    equipment.save()
+                    cart_item.save()
+                    transaction.remarks = remarks
+                    transaction.status = 'Returned'
+                    transaction.save()
+
+            elif item_type == 'chem':
+                    cart_item = CartItem.objects.get(cart=cart_id, chemicals_id=item_id)
+                    chemicals = cart_item.chemicals
+                    chemicals.mass +=  cart_item.quantity  #['return_quantity']
+                    cart_item.return_quantity = cart_item.quantity #item['return_quantity']
+                    cart_item.return_date = datetime.date.today()  # Set return date to today
+                    chemicals.save()
+                    cart_item.save()
+                    transaction.remarks = remarks
+                    transaction.status = 'Returned'
+                    transaction.save()
+
+        return Response({'message': 'Returned successfully'}, status=status.HTTP_200_OK)
+    
+              
+
+
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
         print("HERE")

@@ -10,8 +10,7 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
             'borrower',
             'date_created',
             'borrow_date',
-            'return_date',
             'status',
-            'remarks'
-            
+            'remarks',
         ]
+

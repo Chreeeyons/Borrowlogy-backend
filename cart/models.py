@@ -24,6 +24,8 @@ class CartItem(models.Model):
     chemicals = models.ForeignKey(Chemical, on_delete=models.CASCADE, null=True, blank=True)  # Link to Material model
     quantity = models.PositiveIntegerField()
     approved = models.BooleanField(default=False)  # Indicates if the item is approved
+    return_quantity = models.PositiveIntegerField(default=0)  # Quantity to be returned
+    return_date = models.DateField(null=True, blank=True)  # Indicates if the item is returned
 
     class Meta:
         unique_together = ('cart', 'equipment')  # Prevent duplicate entries

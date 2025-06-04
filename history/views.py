@@ -30,6 +30,7 @@ class HistoryViewSet(viewsets.ModelViewSet):
         cart_id = request.data["cart_id"]
         borrower_date = request.data["borrower_date"]
         remarks = request.data["remarks"]
+        
         print(user_id, cart_id, borrower_date, remarks)
 
         # Create a new history record
@@ -77,3 +78,29 @@ class HistoryViewSet(viewsets.ModelViewSet):
                 cart_serializer = CartSerializer(cart)  # Serialize the Cart object
                 history_data[index]["cart"] = cart_serializer.data  # Add serialized cart data
             return Response(serializer.data)
+        
+    # @action(detail=False, methods=['post'])
+    # def return_item(self, request):
+    #     cart_id = request.data.get('cart_id')
+    #     equipment_ids = request.data.get('equipment_ids', [])
+
+
+    #     if not cart_id or not equipment_ids:
+    #         return Response({"error": "Missing cart_id or equipment_ids"}, status=400)
+
+    #     try:
+    #         cart = Cart.objects.get(id=cart_id)
+    #         removed = []
+    #         for eid in equipment_ids:
+    #             try:
+    #                 item = CartItem.objects.get(cart=cart, equipment_id=eid)
+    #                 equipment = item.equipment
+    #                 equipment.quantity += item.quantity
+    #                 equipment.save()
+    #                 item.delete()
+    #                 removed.append(eid)
+    #             except CartItem.DoesNotExist:
+    #                 continue
+    #         return Response({'removed_items': removed})
+    #     except Cart.DoesNotExist:
+    #         return Response({'error': 'Cart not found'}, status=404)

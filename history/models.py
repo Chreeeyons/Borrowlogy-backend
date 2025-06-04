@@ -14,6 +14,8 @@ class TransactionHistory(models.Model):
         ('pending', 'Pending'),
     ])
     remarks = models.TextField(blank=True)
+    labtech_remarks = models.TextField(blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.borrower}  - {self.status}"
